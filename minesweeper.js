@@ -1,5 +1,6 @@
 export function createNewGame (origin, ratio, mineCount) {
     var firstBlock = origin;
+    var safeRadius = 2;
     var boardRatio = ratio;
     var minePositions = [];
     var Row = new Array(boardRatio);
@@ -25,7 +26,7 @@ export function createNewGame (origin, ratio, mineCount) {
             // x
             function getXPosition () {
                 let x = getRandomInt(0, boardRatio);
-                if (x > (firstBlock[0] - 2) && x < (firstBlock[0] + 2)) {
+                if (x > (firstBlock[0] - safeRadius) && x < (firstBlock[0] + safeRadius)) {
                     return getXPosition();
                 } else {
                     return x;
@@ -35,7 +36,7 @@ export function createNewGame (origin, ratio, mineCount) {
             // y
             const getYPosition = () => {
                 let y = getRandomInt(0, boardRatio);
-                if (y > (firstBlock[1] - 2) && y < (firstBlock[1] + 2)) {
+                if (y > (firstBlock[1] - safeRadius) && y < (firstBlock[1] + safeRadius)) {
                     return getYPosition();
                 } else {
                     return y;
