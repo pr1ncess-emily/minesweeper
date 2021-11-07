@@ -1,8 +1,8 @@
 import { createNewGame } from "./minesweeper.js";
 
 $(document).ready(() => {
-    const rows = 5;
-    const columns = 5;
+    const rows = 8;
+    const columns = 8;
 
     var hasUserClicked = false;
 
@@ -18,7 +18,7 @@ $(document).ready(() => {
                 let blockCoord = JSON.parse(e.target.id);
                 if (!hasUserClicked) {
                     hasUserClicked = true;
-                    gameData = createNewGame(blockCoord, 5, 5);
+                    gameData = createNewGame(blockCoord, 8, 20);
                     gameBoard = gameData.board;
                     console.log(gameBoard);
                 }
