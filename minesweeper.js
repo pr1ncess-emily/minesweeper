@@ -8,6 +8,9 @@ export function createNewGame (origin, ratio, mineCount) {
     Board.fill(0);
     Board = Board.map(val => Array(boardRatio).fill(0));
     
+    /*
+        ! If the board size is too small and there are too many mines, the program will not have enough spots to place mines in or will take too long trying to find spots
+    */
     const createMinePositions = () => {
 
         var minesToPlace = mineCount;
@@ -23,31 +26,29 @@ export function createNewGame (origin, ratio, mineCount) {
             function getXPosition () {
                 let x = getRandomInt(0, boardRatio);
                 if (x > (firstBlock[0] - 2) && x < (firstBlock[0] + 2)) {
-                    console.log('too close');
+                    return getXPosition();
                 } else {
                     return x;
                 }
-                return getXPosition();
             }
             position[0] = getXPosition();
             // y
             const getYPosition = () => {
                 let y = getRandomInt(0, boardRatio);
                 if (y > (firstBlock[1] - 2) && y < (firstBlock[1] + 2)) {
-                    console.log('too close');
+                    return getYPosition();
                 } else {
                     return y;
                 }
-                return getYPosition();
             }
             position[1] = getYPosition();
+            if (Board[position[1]][position[0]] === "X") {
+                return placeMine();
+            }
             minePositions.push(position);
             let row = Board[position[1]];
             row[position[0]] = 'X';
-            console.log(`
-                Origin: ${firstBlock},\n
-                Mines: ${minePositions}
-            `);
+            return;
         }
     
         for (; minesToPlace > 0; minesToPlace--) {
