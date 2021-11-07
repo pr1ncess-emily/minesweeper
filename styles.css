@@ -1,0 +1,13 @@
+.row {
+    width: 500px;
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.block {
+    height: 100%;
+    width: 100%;
+}
