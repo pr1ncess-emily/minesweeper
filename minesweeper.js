@@ -17,35 +17,56 @@ export function createNewGame (origin, ratio, mineCount) {
         var minesToPlace = mineCount;
 
         const placeMine = () => {
-            const getRandomInt = (min, max) => {
-                min = Math.ceil(min);
-                max = Math.floor(max);
-                return Math.floor(Math.random() * (max - min) + min);
-            }
+
             let position = new Array(2);
-            // x
-            function getXPosition () {
-                let x = getRandomInt(0, boardRatio);
-                if (x > (firstBlock[0] - safeRadius) && x < (firstBlock[0] + safeRadius)) {
-                    return getXPosition();
+
+            // ranges = array of 2 ranges
+            const getRandomPosition = ranges => {
+                console.log(ranges);
+                let index;
+                if (Math.random() > 0.5) {
+                    index = 1;
                 } else {
-                    return x;
+                    index = 0;
                 }
+                let selectedRange = ranges[index];
+                if (!selectedRange) {
+                    index ? index = 0 : index = 1;
+                    selectedRange = ranges[index];
+                } 
+                // Return position (includes both)
+                return Math.floor(Math.random() * (selectedRange[0] - selectedRange[1] + 1) + selectedRange[0]);
             }
-            position[0] = getXPosition();
-            // y
-            const getYPosition = () => {
-                let y = getRandomInt(0, boardRatio);
-                if (y > (firstBlock[1] - safeRadius) && y < (firstBlock[1] + safeRadius)) {
-                    return getYPosition();
+
+            const getAxisPosition = (axis) => {
+                let firstBlockPosition;
+                if (axis === 'x') {
+                    firstBlockPosition = firstBlock[0];
                 } else {
-                    return y;
+                    firstBlockPosition = firstBlock[1];
                 }
+                const safeBoundLower = () => {
+                    let bound = (firstBlockPosition - safeRadius);
+                    if (bound < 0) {
+                        return false;
+                    } else {
+                        return [0, bound];
+                    }
+                }
+                const safeBoundUpper = () => {
+                    let bound = (firstBlockPosition + safeRadius);
+                    if (bound > (ratio - 1)) {
+                        return false;
+                    } else {
+                        return [bound, (ratio - 1)];
+                    }
+                }
+                return getRandomPosition([safeBoundLower(), safeBoundUpper()]);
             }
-            position[1] = getYPosition();
-            if (Board[position[1]][position[0]] === "X") {
-                return placeMine();
-            }
+            
+            position[0] = getAxisPosition("x");
+            position[1] = getAxisPosition("y");
+
             minePositions.push(position);
             let row = Board[position[1]];
             row[position[0]] = 'X';
