@@ -50,6 +50,7 @@ $(document).ready(() => {
             7: './assets/blockSeven.svg',
             8: './assets/blockEight.svg',
             0: './assets/blockBlank.svg',
+            "S": './assets/blockBlank.svg',
         }
         return assetSources[type];
     }
